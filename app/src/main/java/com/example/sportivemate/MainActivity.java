@@ -13,5 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d("tag","this is new line");
         Log.d("tag","this is new line");
+        Log.d("tag","this is test line1");
+        Log.d("tag","this is test line2");
     }
 }
