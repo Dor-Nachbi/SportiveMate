@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private Button logoutBtn;
     private FirebaseAuth mAuth;
@@ -28,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 Log.d("TAG", "Logged out");
                 Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), Login.class));
+                startActivity(new Intent(getApplicationContext(), LoginRegisterActivity.class));
                 finish();
             }
         });
     }
+
+
+
 }
