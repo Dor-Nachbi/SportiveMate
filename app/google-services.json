@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "935429630021",
+    "firebase_url": "https://sportivemate.firebaseio.com",
+    "project_id": "sportivemate",
+    "storage_bucket": "sportivemate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935429630021:android:6c6c3e11d520cf4da05b2c",
+        "android_client_info": {
+          "package_name": "com.example.sportivemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935429630021-9mecb061n4k7vasbt9ldrhuq6mvkrga4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClo77Dl3eM8eq37W2O2UVGDM-IjJV278U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935429630021-9mecb061n4k7vasbt9ldrhuq6mvkrga4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
