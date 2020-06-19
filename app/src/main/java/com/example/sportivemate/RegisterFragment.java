@@ -84,7 +84,7 @@ public class RegisterFragment extends Fragment {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.loginFragment);
+                Navigation.findNavController(v).navigateUp();
             }
         });
         mAuth = FirebaseAuth.getInstance();
@@ -100,15 +100,15 @@ public class RegisterFragment extends Fragment {
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)) {
+                if (TextUtils.isEmpty(email)) {
                     mEmail.setError("Email is required!");
                     return;
                 }
-                if(TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(password)) {
                     mPassword.setError("Password is required!");
                     return;
                 }
-                if(password.length() < 6) {
+                if (password.length() < 6) {
                     mPassword.setError("Password is too short <6");
                     return;
                 }

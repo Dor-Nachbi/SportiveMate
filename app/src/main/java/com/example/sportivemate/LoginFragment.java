@@ -147,8 +147,8 @@ public class LoginFragment extends Fragment {
 
                             Log.d("TAG", user.getEmail() + " Logged In");
                             Toast.makeText(getActivity(), user.getEmail() + " Logged In", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getActivity(), MainActivity.class);
-                            startActivity(i);
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            getActivity().finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithEmail:failure", task.getException());
