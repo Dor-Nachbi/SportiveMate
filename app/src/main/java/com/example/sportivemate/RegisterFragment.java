@@ -1,146 +1,224 @@
 package com.example.sportivemate;
 
-import android.app.Activity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
-import android.text.TextUtils;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.sportivemate.model.StoreModel;
+import com.example.sportivemate.model.User;
+import com.example.sportivemate.model.UserModel;
+import com.google.android.material.snackbar.Snackbar;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link RegisterFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final String REGISTRATION_FAILED_MESSAGE = "Registration failed. Please try again.";
+    static final String INVALID_FORM_MESSAGE = "Form not valid. Please try again.";
+    static final String INVALID_EMAIL_MESSAGE = "Email not valid.";
+    static final String INVALID_NAME_MESSAGE = "Name must start with capital letter.";
+    static final String INVALID_PASSWORD_MESSAGE = "Password must be minimum 5 length.";
+    static final String INVALID_VAL_PASSWORD_MESSAGE = "Validation password is not equal to password.";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private FirebaseAuth mAuth;
-    private EditText mEmail, mPassword;
-    private Button registerBtn;
-    private ProgressBar progressBar;
+    View view;
+    ImageView image;
+    Bitmap imageBitmap;
+    EditText emailEt;
+    EditText fullName;
+    EditText pwdEt;
+    EditText valPedEt;
+    Button takePhotoBtn;
+    Button sendBtn;
+    ProgressBar progressBar;
 
     public RegisterFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RegisterFragment newInstance(String param1, String param2) {
-        RegisterFragment fragment = new RegisterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_register, container, false);
-        TextView tv = view.findViewById(R.id.register_login);
-        tv.setOnClickListener(new View.OnClickListener() {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_register, container, false);
+
+        image = view.findViewById(R.id.signup_image);
+        emailEt = view.findViewById(R.id.signup_email_et);
+        fullName = view.findViewById(R.id.signup_fullName);
+        pwdEt = view.findViewById(R.id.signup_password_et);
+        valPedEt = view.findViewById(R.id.signup_password_validation_et);
+        progressBar = view.findViewById(R.id.signup_progress);
+        progressBar.setVisibility(View.INVISIBLE);
+        takePhotoBtn = view.findViewById(R.id.signup_take_photo_btn);
+        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigateUp();
+                takePhoto();
             }
         });
-        mAuth = FirebaseAuth.getInstance();
 
-        mEmail = view.findViewById(R.id.register_email);
-        mPassword = view.findViewById(R.id.register_password);
-        registerBtn = view.findViewById(R.id.register_btn);
-        progressBar = view.findViewById(R.id.register_progressBar);
-
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        sendBtn = view.findViewById(R.id.signup_send_btn);
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mEmail.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
-
-                if (TextUtils.isEmpty(email)) {
-                    mEmail.setError("Email is required!");
-                    return;
+                hideKeyboard();
+                if (validateForm()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    takePhotoBtn.setClickable(false);
+                    sendBtn.setClickable(false);
+                    signUp();
+                } else {
+                    registrationFailed(INVALID_FORM_MESSAGE);
                 }
-                if (TextUtils.isEmpty(password)) {
-                    mPassword.setError("Password is required!");
-                    return;
-                }
-                if (password.length() < 6) {
-                    mPassword.setError("Password is too short <6");
-                    return;
-                }
-                registerBtn.setEnabled(false);
-                progressBar.setVisibility(View.VISIBLE);
-                register(view, email, password);
             }
         });
+
         return view;
     }
 
-    void register(View view, String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Activity) view.getContext(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d("TAG", user.getEmail() + " Created!");
-                            Toast.makeText(getActivity(), user.getEmail() + " Created!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Failed to create user.", Toast.LENGTH_SHORT).show();
-                            registerBtn.setEnabled(true);
-
-                        }
-
-                        progressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
+    public void hideKeyboard() {
+        if (view != null) {
+            FragmentActivity activity = getActivity();
+            InputMethodManager inputManager;
+            if (activity != null) {
+                inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputManager != null)
+                    inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
+
+    void signUp() {
+        if (imageBitmap != null) {
+            StoreModel.uploadUserImage(imageBitmap, emailEt.getText().toString(), new StoreModel.Listener() {
+                @Override
+                public void onSuccess(final String url) {
+                    saveUser(url);
+                }
+
+                @Override
+                public void onFail() {
+                    registrationFailed(REGISTRATION_FAILED_MESSAGE);
+                }
+            });
+        } else
+            saveUser("");
+    }
+
+    private void saveUser(final String imageUrl) {
+        final String email = emailEt.getText().toString();
+        final String pwd = pwdEt.getText().toString();
+        UserModel.instance.signUp(email, pwd, new UserModel.Listener<String>() {
+            @Override
+            public void onComplete(String data) {
+                if (data != null) {
+                    String email = emailEt.getText().toString();
+                    User user = new User(data, email);
+                    user.setFullName(fullName.getText().toString());
+                    user.setImageUrl(imageUrl);
+                    UserModel.instance.addUser(user, null);
+
+                    Log.d("TAG", fullName.getText().toString() + " Logged In");
+                    Toast.makeText(getActivity(), fullName.getText().toString() + " Logged In", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    getActivity().finish();
+                } else {
+                    registrationFailed(INVALID_FORM_MESSAGE);
+                }
+            }
+        });
+    }
+
+    private void registrationFailed(String errorMsg) {
+        progressBar.setVisibility(View.INVISIBLE);
+        Snackbar mySnackbar = Snackbar.make(view, errorMsg, Snackbar.LENGTH_LONG);
+        mySnackbar.show();
+        takePhotoBtn.setClickable(true);
+        sendBtn.setClickable(true);
+    }
+
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (getActivity() != null && intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    imageBitmap = (Bitmap) extras.get("data");
+                    image.setImageBitmap(imageBitmap);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean validateForm() {
+        return checkEmail(emailEt)
+                && checkName(fullName)
+                && checkPassword(pwdEt, valPedEt);
+    }
+
+    private boolean checkEmail(EditText emailEt) {
+        String email = emailEt.getText().toString();
+        if (email.contains("@") && Patterns.EMAIL_ADDRESS.matcher(email).matches() && !email.trim().isEmpty())
+            return true;
+        emailEt.setError(INVALID_EMAIL_MESSAGE);
+        return false;
+    }
+
+    private boolean checkName(EditText nameEt) {
+        String name = nameEt.getText().toString();
+        if (!name.trim().isEmpty() && Character.isUpperCase(name.charAt(0)))
+            return true;
+        nameEt.setError(INVALID_NAME_MESSAGE);
+        return false;
+    }
+
+    private boolean checkPassword(EditText pwdEt, EditText valPwdEt) {
+        String pwd = pwdEt.getText().toString();
+        String valPwd = valPwdEt.getText().toString();
+
+        if (pwd.length() < 5) {
+            pwdEt.setError(INVALID_PASSWORD_MESSAGE);
+            return false;
+        } else if (!pwd.equals(valPwd)) {
+            valPwdEt.setError(INVALID_VAL_PASSWORD_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
 }
