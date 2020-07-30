@@ -1,66 +1,49 @@
 package com.example.sportivemate.UI;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.sportivemate.LoginRegisterActivity;
-import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.sportivemate.model.Sport;
+import com.example.sportivemate.model.SportModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.LinkedList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView sportsList;
+    private List<Sport> sportsData = new LinkedList<>();
+    private HomeFragmentViewModel viewModel;
+    private SportsListAdapter adapter;
+    private LiveData<List<Sport>> liveData;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    public interface Delegate {
+        void OnItemSelected(Sport sport);
+    }
+
+    Delegate parent;
 
     public HomeFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -68,20 +51,124 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        Button logoutBtn = view.findViewById(R.id.main_logout_btn);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        sportsList = view.findViewById(R.id.sports_list_list);
+        sportsList.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        sportsList.setLayoutManager(layoutManager);
+
+        adapter = new SportsListAdapter();
+        sportsList.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Toast.makeText(v.getContext(), "Logged out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(v.getContext(), LoginRegisterActivity.class));
-                getActivity().finish();
+            public void onClick(int position) {
+                Sport sport = sportsData.get(position);
+                parent.OnItemSelected(sport);
             }
         });
 
+        sportsList.addItemDecoration(new DividerItemDecoration(sportsList.getContext(), layoutManager.getOrientation()));
 
-        //return inflater.inflate(R.layout.fragment_home, container, false);
+        liveData = viewModel.getLiveData();
+        liveData.observe(getViewLifecycleOwner(), new Observer<List<Sport>>() {
+            @Override
+            public void onChanged(List<Sport> sports) {
+                sportsData = sports;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        final SwipeRefreshLayout swipeRefresh = view.findViewById(R.id.sports_list);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.refresh(new SportModel.CompleteListener() {
+                    @Override
+                    public void onComplete() {
+                        swipeRefresh.setRefreshing(false);
+                    }
+                });
+            }
+        });
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof Delegate) {
+            parent = (Delegate) getActivity();
+        } else {
+            throw new RuntimeException("Parent activity must implement Delegate interface");
+        }
+
+        viewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
+
+        setHasOptionsMenu(true);
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        parent = null;
+    }
+
+    interface OnItemClickListener {
+        void onClick(int position);
+    }
+
+    static class SportRowViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+
+        public SportRowViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+            super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onClick(position);
+                        }
+                    }
+                }
+            });
+            name = itemView.findViewById(R.id.row_sport_name_tv);
+        }
+
+        void bind(Sport sport) {
+            name.setText(sport.getName());
+        }
+    }
+
+    class SportsListAdapter extends RecyclerView.Adapter<SportRowViewHolder> {
+        private OnItemClickListener listener;
+
+        void setOnItemClickListener(OnItemClickListener listener) {
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public SportRowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.list_row_sport, parent, false);
+            return new SportRowViewHolder(view, listener);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull SportRowViewHolder holder, int position) {
+            Sport sport = sportsData.get(position);
+            holder.bind(sport);
+        }
+
+        @Override
+        public int getItemCount() {
+            return sportsData.size();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.sport_list_menu,menu);
     }
 }
