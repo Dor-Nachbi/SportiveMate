@@ -9,8 +9,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/sports_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?android:attr/actionBarSize">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sports_list_list"

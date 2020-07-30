@@ -20,7 +20,7 @@ import java.util.Map;
 public class SportFirebase {
     private final static String SPORT_COLLECTION = "Sports";
 
-    static void addSport(Sport sport, final SportModel.Listener<Boolean> listener) {
+    public static void addSport(Sport sport, final SportModel.Listener<Boolean> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(SPORT_COLLECTION).document(sport.getName()).set(jsonFromSport(sport)).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

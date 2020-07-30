@@ -8,20 +8,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Sport;
+import com.example.sportivemate.model.SportFirebase;
 import com.example.sportivemate.model.SportModel;
 
 import java.util.LinkedList;
@@ -170,5 +175,22 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.sport_list_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addSportFragment);
+        /*Sport sport = new Sport("football", "descruption", " image");
+        sportsData.add(sport);
+        sportsList.setAdapter(adapter);
+        SportFirebase.addSport(sport, new SportModel.Listener<Boolean>() {
+            @Override
+            public void onComplete(Boolean data) {
+                Log.d("Tag","add football to database");
+            }
+        });*/
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

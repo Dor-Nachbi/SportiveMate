@@ -9,5 +9,14 @@
         android:id="@+id/homeFragment"
         android:name="com.example.sportivemate.UI.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" /><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addSportFragment"
+            app:destination="@id/addSportFragment" />
+    </fragment><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
+    <fragment
+        android:id="@+id/addSportFragment"
+        android:name="com.example.sportivemate.UI.AddSportFragment"
+        android:label="fragment_add_sport"
+        tools:layout="@layout/fragment_add_sport" />
 </navigation>
