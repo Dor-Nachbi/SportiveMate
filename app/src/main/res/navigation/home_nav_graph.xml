@@ -26,5 +26,9 @@
         android:id="@+id/sportPostsListFragment"
         android:name="com.example.sportivemate.UI.SportPostsListFragment"
         android:label="fragment_sport_posts_list"
-        tools:layout="@layout/fragment_sport_posts_list" />
+        tools:layout="@layout/fragment_sport_posts_list" >
+        <argument
+            android:name="sport"
+            app:argType="com.example.sportivemate.model.Sport" />
+    </fragment>
 </navigation>

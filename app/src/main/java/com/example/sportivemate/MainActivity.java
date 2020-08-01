@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
 
     @Override
     public void OnItemSelected(Sport sport) {
-        navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport.getName()));
+        navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport));
     }
 
 }
