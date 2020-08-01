@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_homeFragment_to_addSportFragment"
             app:destination="@id/addSportFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sportPostsListFragment"
+            app:destination="@id/sportPostsListFragment" />
     </fragment><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
     <fragment
         android:id="@+id/addSportFragment"
         android:name="com.example.sportivemate.UI.AddSportFragment"
         android:label="fragment_add_sport"
         tools:layout="@layout/fragment_add_sport" />
+    <fragment
+        android:id="@+id/sportPostsListFragment"
+        android:name="com.example.sportivemate.UI.SportPostsListFragment"
+        android:label="fragment_sport_posts_list"
+        tools:layout="@layout/fragment_sport_posts_list" />
 </navigation>

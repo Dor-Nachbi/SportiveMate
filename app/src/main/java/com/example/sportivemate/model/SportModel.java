@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.sportivemate.MyApp;
+import com.google.protobuf.ApiProto;
 
 import java.util.List;
 
@@ -60,6 +62,7 @@ public class SportModel {
                 new AsyncTask<String, String, String>() {
                     @Override
                     protected String doInBackground(String... strings) {
+                        AppLocalDb.db.sportDao().delete();
                         long lastUpdated = 0;
                         for (Sport sport : data) {
                             AppLocalDb.db.sportDao().insertAll(sport);

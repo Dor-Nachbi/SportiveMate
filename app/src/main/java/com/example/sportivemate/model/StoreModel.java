@@ -14,7 +14,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 public class StoreModel {
-    static final String USER_IMAGES = "users_images";
+    static final String USER_IMAGES = "users_images/";
     public interface Listener {
         void onSuccess(String url);
 
@@ -26,7 +26,7 @@ public class StoreModel {
     }
 
 
-    private static void uploadImage(Bitmap imageBmp, String name, final Listener listener, String folder) {
+    public static void uploadImage(Bitmap imageBmp, String name, final Listener listener, String folder) {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         final StorageReference imageReference = firebaseStorage.getReference().child(folder).child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

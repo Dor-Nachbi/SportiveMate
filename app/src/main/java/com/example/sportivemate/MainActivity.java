@@ -18,6 +18,7 @@ import com.example.sportivemate.UI.HomeFragment;
 import com.example.sportivemate.UI.HomeFragmentDirections;
 import com.example.sportivemate.model.Sport;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.Delegate{
 
@@ -30,20 +31,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-
         navController = Navigation.findNavController(this, R.id.nav_host_home);
-        /*logoutBtn = findViewById(R.id.main_logout_btn);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Log.d("TAG", "Logged out");
-                Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), LoginRegisterActivity.class));
-                finish();
-            }
-        });*/
     }
+
     public void updateUI() {
 
     }
@@ -72,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
 
     @Override
     public void OnItemSelected(Sport sport) {
-        navController.navigate(HomeFragmentDirections.actionGlobalHomeFragment());
-
+        navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport.getName()));
     }
+
 }

@@ -22,12 +22,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sportivemate.MyApp;
 import com.example.sportivemate.R;
+import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Sport;
 import com.example.sportivemate.model.SportFirebase;
 import com.example.sportivemate.model.SportModel;
+import com.squareup.picasso.Picasso;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -123,6 +128,7 @@ public class HomeFragment extends Fragment {
 
     static class SportRowViewHolder extends RecyclerView.ViewHolder {
         TextView name;
+        ImageView image;
 
         public SportRowViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -138,10 +144,17 @@ public class HomeFragment extends Fragment {
                 }
             });
             name = itemView.findViewById(R.id.row_sport_name_tv);
+            image = itemView.findViewById(R.id.sport_imageView);
         }
 
         void bind(Sport sport) {
             name.setText(sport.getName());
+            if(sport.getImageUrl() != null && sport.getImageUrl() != "") {
+                Picasso.get().load(sport.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(image);
+            }else{
+                image.setImageResource(R.drawable.ic_launcher_background);
+            }
+
         }
     }
 
@@ -180,17 +193,6 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addSportFragment);
-        /*Sport sport = new Sport("football", "descruption", " image");
-        sportsData.add(sport);
-        sportsList.setAdapter(adapter);
-        SportFirebase.addSport(sport, new SportModel.Listener<Boolean>() {
-            @Override
-            public void onComplete(Boolean data) {
-                Log.d("Tag","add football to database");
-            }
-        });*/
-
-
         return super.onOptionsItemSelected(item);
     }
 }
