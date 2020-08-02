@@ -20,7 +20,7 @@ import java.util.Map;
 public class PostFireBase {
     private static final String REPORT_COLLECTION = "Posts";
 
-    static void addPost(final Post post, final PostModel.Listener<Post> listener) {
+    public static void addPost(final Post post, final PostModel.Listener<Post> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(REPORT_COLLECTION).add(jsonFromPost(post)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
@@ -87,7 +87,7 @@ public class PostFireBase {
                 });
     }
 
-    static void getAllSportPostsSince(Sport spot, long since, final PostModel.Listener<List<Post>> listener) {
+    /*static void getAllSportPostsSince(Sport spot, long since, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp timestamp = new Timestamp(new Date(since));
         db.collection(REPORT_COLLECTION).whereEqualTo("sportName", spot.getName())
@@ -111,7 +111,7 @@ public class PostFireBase {
                 }
             }
         });
-    }
+    }*/
 
     static void getAllPosts(Sport sport, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -164,10 +164,11 @@ public class PostFireBase {
 
     private static Map<String, Object> jsonFromPost(Post post) {
         HashMap<String, Object> json = new HashMap<>();
+        json.put("postName", post.getName());
+        json.put("dexcription", post.getDescription());
         json.put("ownerId", UserModel.instance.getCurrentUserId());
         json.put("sportName", post.getSportName());
         json.put("date", (post.getDate() == 0) ? FieldValue.serverTimestamp() : new Timestamp(new Date(post.getDate())));
-        json.put("imageUrl", post.getImageUrl());
         json.put("lastUpdated", FieldValue.serverTimestamp());
         json.put("isDeleted", post.isDeleted());
         return json;
@@ -181,11 +182,12 @@ public class PostFireBase {
         if (ownerId == null || sportName ==null) {
             throw new RuntimeException("Invalid owner id or sport name");
         }
+        post.setName((String)json.get("postName"));
+        post.setDescription((String)json.get("description"));
         post.setOwnerId(ownerId);
         post.setSportName(sportName);
         Timestamp dateTimestamp = (Timestamp) json.get("date");
         if (dateTimestamp != null) post.setDate(dateTimestamp.toDate().getTime());
-        post.setImageUrl((String) json.get("imageUrl"));
         Timestamp lastUpdatedTimestamp = (Timestamp) json.get("lastUpdated");
         if (lastUpdatedTimestamp != null)
             post.setLastUpdated(lastUpdatedTimestamp.toDate().getTime());

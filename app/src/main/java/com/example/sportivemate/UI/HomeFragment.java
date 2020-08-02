@@ -8,14 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,11 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sportivemate.MyApp;
 import com.example.sportivemate.R;
-import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Sport;
-import com.example.sportivemate.model.SportFirebase;
 import com.example.sportivemate.model.SportModel;
 import com.squareup.picasso.Picasso;
 
@@ -143,8 +138,8 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-            name = itemView.findViewById(R.id.row_sport_name_tv);
-            image = itemView.findViewById(R.id.sport_imageView);
+            name = itemView.findViewById(R.id.row_post_name_tv);
+            image = itemView.findViewById(R.id.post_imageView);
         }
 
         void bind(Sport sport) {

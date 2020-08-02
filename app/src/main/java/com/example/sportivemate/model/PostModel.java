@@ -31,8 +31,9 @@ public class PostModel {
 
     public void refreshSportPostsList(final Sport sport, final CompleteListener listener) {
         long lastUpdated = MyApp.context.getSharedPreferences("lastUpdated", Context.MODE_PRIVATE)
-                .getLong("ReportsLastUpdateDate", 0);
-        PostFireBase.getAllSportPostsSince(sport, lastUpdated, new Listener<List<Post>>() {
+                .getLong("PostsLastUpdateDate", 0);
+        //PostFireBase.getAllSportPostsSince(sport, lastUpdated, new Listener<List<Post>>() {
+        PostFireBase.getAllPosts(sport, new Listener<List<Post>>() {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onComplete(final List<Post> data) {
@@ -47,7 +48,9 @@ public class PostModel {
                                     lastUpdated = post.getLastUpdated();
                             }
                             SharedPreferences.Editor editor = MyApp.context.getSharedPreferences("lastUpdated", Context.MODE_PRIVATE).edit();
-                            editor.putLong("PostsLastUpdateDate", lastUpdated).commit();
+                            //editor.putLong("PostsLastUpdateDate", lastUpdated).commit();
+                            editor.putLong("PostsLastUpdateDate", lastUpdated).apply();
+
                         }
                         return "";
                     }

@@ -16,11 +16,14 @@ import android.widget.Toast;
 
 import com.example.sportivemate.UI.HomeFragment;
 import com.example.sportivemate.UI.HomeFragmentDirections;
+import com.example.sportivemate.UI.SportPostsListFragment;
+import com.example.sportivemate.model.AppLocalDb;
+import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.Sport;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.Delegate{
+public class MainActivity extends AppCompatActivity implements HomeFragment.Delegate, SportPostsListFragment.Delegate {
 
     private Button logoutBtn;
     private FirebaseAuth mAuth;
@@ -63,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
     @Override
     public void OnItemSelected(Sport sport) {
         navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport));
+    }
+
+    @Override
+    public void OnItemSelected(Post post) {
+        //navController.navigate(SpotReportsListFragmentDirections.actionGlobalReportDetailsFragment(report));
     }
 
 }

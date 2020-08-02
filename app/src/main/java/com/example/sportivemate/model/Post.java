@@ -70,10 +70,12 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(@NonNull String name,@NonNull String description,@NonNull String imageUrl) {
+    public Post(@NonNull String name,@NonNull String description,@NonNull String imageUrl,String sportName,String ownerId) {
         this.name = name;
         this.description=description;
         this.imageUrl = imageUrl;
+        this.sportName = sportName;
+        this.ownerId = ownerId;
     }
 
     public long getLastUpdated() {
