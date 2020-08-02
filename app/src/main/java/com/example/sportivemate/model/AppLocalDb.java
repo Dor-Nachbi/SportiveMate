@@ -6,9 +6,10 @@ import androidx.room.RoomDatabase;
 
 import com.example.sportivemate.MyApp;
 
-@Database(entities = {Sport.class}, version = 1)
+@Database(entities = {Sport.class}, version = 4)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract SportDao sportDao();
+    public  abstract PostDao postDao();
 }
 
 public class AppLocalDb {
