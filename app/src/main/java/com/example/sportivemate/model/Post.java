@@ -22,8 +22,31 @@ public class Post implements Serializable {
     private String name;
     private String imageUrl;
     private String description;
+
+
+
+    private String city;
+
+
+
+    private String phoneNumber;
     long lastUpdated;
 
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     public boolean isDeleted() {
         return isDeleted;
     }

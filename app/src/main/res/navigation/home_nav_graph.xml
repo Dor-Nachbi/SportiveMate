@@ -30,5 +30,13 @@
         <argument
             android:name="sport"
             app:argType="com.example.sportivemate.model.Sport" />
+        <action
+            android:id="@+id/action_sportPostsListFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.sportivemate.UI.AddPostFragment"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" />
 </navigation>

@@ -26,6 +26,9 @@ import android.widget.TextView;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Sport;
 import com.example.sportivemate.model.SportModel;
+import com.example.sportivemate.model.User;
+import com.example.sportivemate.model.UserFirebase;
+import com.example.sportivemate.model.UserModel;
 import com.squareup.picasso.Picasso;
 
 
@@ -180,9 +183,15 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.sport_list_menu,menu);
+        UserFirebase.getCurrentUserDetails(new UserModel.Listener<User>() {
+            @Override
+            public void onComplete(User data) {
+                if(data.getEmail().toString().equals("1@1.com"))
+                    inflater.inflate(R.menu.sport_list_menu,menu);
+            }
+        });
     }
 
     @Override

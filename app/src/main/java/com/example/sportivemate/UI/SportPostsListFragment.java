@@ -79,13 +79,6 @@ public class SportPostsListFragment extends Fragment {
             public void onComplete(User data) {
                 username = data.getFullName();
                 userID = data.getId();
-                Post post = new Post(username,"aaaaaaa","",sport.getName(),userID);
-                PostFireBase.addPost(post, new PostModel.Listener<Post>() {
-                    @Override
-                    public void onComplete(Post data) {
-                        Log.d("TAG", data.getSportName());
-                    }
-                });
             }
         });
 
@@ -226,12 +219,12 @@ public class SportPostsListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        //inflater.inflate(R.menu.sport_list_menu,menu);
+        inflater.inflate(R.menu.sport_list_menu,menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addSportFragment);
+        Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addPostFragment);
         return super.onOptionsItemSelected(item);
     }
 }

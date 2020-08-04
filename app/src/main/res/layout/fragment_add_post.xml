@@ -4,31 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="UI.AddSportFragment">
+    tools:context="UI.AddPostFragment">
 
-
-    <ImageView
-        android:id="@+id/new_sport_image_v"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintDimensionRatio="w,3:4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/new_sport_take_photo_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="24dp"
-        android:text="Take Photo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_sport_image_v" />
 
     <Button
         android:id="@+id/new_sport_save_btn"
@@ -40,7 +17,6 @@
         android:text="SAVE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_sport_fragment_new_description" />
 
@@ -49,11 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:text="Name:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_sport_take_photo_btn" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/b"
@@ -61,26 +37,49 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="Description:"
+        android:text="Phone:"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/a" />
 
+    <TextView
+        android:id="@+id/c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="City:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b" />
+
+    <TextView
+        android:id="@+id/c2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Description:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/c" />
+
     <EditText
-        android:id="@+id/add_sport_fragment_new_sport_name"
+        android:id="@+id/add_post_fragment_new_post_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/a"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/a"
-        app:layout_constraintTop_toTopOf="@+id/a" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/add_post_fragment_new_description"
+        android:id="@+id/add_post_fragment_new_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -89,8 +88,7 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/b"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/b"
-        app:layout_constraintTop_toTopOf="@+id/b" />
+        app:layout_constraintStart_toEndOf="@+id/b" />
 
     <ProgressBar
         android:id="@+id/new_sport_progress"
@@ -102,4 +100,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/add_post_fragment_new_city"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="32dp"
+        android:entries="@array/spinnerItems"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/c"
+        app:layout_constraintStart_toEndOf="@+id/c" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:maxLines="20"
+        android:minLines="5"
+        app:layout_constraintBottom_toTopOf="@+id/new_sport_save_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/c2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

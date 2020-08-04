@@ -165,7 +165,7 @@ public class PostFireBase {
     private static Map<String, Object> jsonFromPost(Post post) {
         HashMap<String, Object> json = new HashMap<>();
         json.put("postName", post.getName());
-        json.put("dexcription", post.getDescription());
+        json.put("description", post.getDescription());
         json.put("ownerId", UserModel.instance.getCurrentUserId());
         json.put("sportName", post.getSportName());
         json.put("date", (post.getDate() == 0) ? FieldValue.serverTimestamp() : new Timestamp(new Date(post.getDate())));
