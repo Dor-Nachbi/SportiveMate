@@ -157,6 +157,9 @@ public class SportPostsListFragment extends Fragment {
         public PostRowViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             name = itemView.findViewById(R.id.row_post_name_tv);
+            image = itemView.findViewById(R.id.post_imageView);
+            time = itemView.findViewById(R.id.post_time_tv);
+            city = itemView.findViewById(R.id.post_city_tv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,9 +178,7 @@ public class SportPostsListFragment extends Fragment {
                 }
             });
 
-            image = itemView.findViewById(R.id.post_imageView);
-            time = itemView.findViewById(R.id.post_time_tv);
-            city = itemView.findViewById(R.id.post_city_tv);
+
 
         }
 

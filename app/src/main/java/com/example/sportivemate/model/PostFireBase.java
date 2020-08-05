@@ -170,6 +170,7 @@ public class PostFireBase {
         json.put("description", post.getDescription());
         json.put("ownerId", UserModel.instance.getCurrentUserId());
         json.put("sportName", post.getSportName());
+        json.put("phoneNumber", post.getPhoneNumber());
         json.put("date", (post.getDate() == 0) ? FieldValue.serverTimestamp() : new Timestamp(new Date(post.getDate())));
         json.put("lastUpdated", FieldValue.serverTimestamp());
         json.put("isDeleted", post.isDeleted());
@@ -188,6 +189,7 @@ public class PostFireBase {
         post.setCity((String)json.get("city"));
         post.setImageUrl((String)json.get("imageUrl"));
         post.setDescription((String)json.get("description"));
+        post.setPhoneNumber((String)json.get("phoneNumber"));
         post.setOwnerId(ownerId);
         post.setSportName(sportName);
         Timestamp dateTimestamp = (Timestamp) json.get("date");
