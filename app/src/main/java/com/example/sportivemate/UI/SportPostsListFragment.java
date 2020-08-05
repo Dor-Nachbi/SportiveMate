@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
@@ -40,6 +42,7 @@ import com.example.sportivemate.model.UserModel;
 import com.squareup.picasso.Picasso;
 
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -153,9 +156,16 @@ public class SportPostsListFragment extends Fragment {
 
         public PostRowViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
+            name = itemView.findViewById(R.id.row_post_name_tv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    UserFirebase.getCurrentUserDetails(new UserModel.Listener<User>() {
+                        @Override
+                        public void onComplete(User data) {
+                            name.setText(data.getFullName());
+                        }
+                    });
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -164,13 +174,7 @@ public class SportPostsListFragment extends Fragment {
                     }
                 }
             });
-            name = itemView.findViewById(R.id.row_post_name_tv);
-            UserFirebase.getCurrentUserDetails(new UserModel.Listener<User>() {
-                @Override
-                public void onComplete(User data) {
-                    name.setText(data.getFullName());
-                }
-            });
+
             image = itemView.findViewById(R.id.post_imageView);
             time = itemView.findViewById(R.id.post_time_tv);
             city = itemView.findViewById(R.id.post_city_tv);
@@ -179,8 +183,10 @@ public class SportPostsListFragment extends Fragment {
 
         void bind(Post post) {
             name.setText(post.getName());
-            String t = ""+post.getDate();
-            time.setText(t);
+            String longV = ""+post.getDate();
+            long millisecond = Long.parseLong(longV);
+            String dateString = DateFormat.format("MM/dd/yyyy HH:mm:ss", new Date(millisecond)).toString();
+            time.setText(dateString);
             city.setText(post.getCity());
             if(post.getImageUrl() != null && post.getImageUrl() != "") {
                 Picasso.get().load(post.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(image);

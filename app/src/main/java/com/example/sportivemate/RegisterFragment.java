@@ -144,11 +144,11 @@ public class RegisterFragment extends Fragment {
                     user.setFullName(fullName.getText().toString());
                     user.setImageUrl(imageUrl);
                     UserModel.instance.addUser(user, null);
-
                     Log.d("TAG", fullName.getText().toString() + " Logged In");
                     Toast.makeText(getActivity(), fullName.getText().toString() + " Logged In", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                     getActivity().finish();
+
                 } else {
                     registrationFailed(INVALID_FORM_MESSAGE);
                 }

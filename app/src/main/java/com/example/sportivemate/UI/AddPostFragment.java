@@ -7,6 +7,7 @@ import androidx.navigation.NavArgs;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,9 +80,10 @@ public class AddPostFragment extends Fragment {
                     public void onComplete(User data) {
                         ownerId = data.getId();
                         imageUrl = data.getImageUrl();
+                        Log.d("TAG",imageUrl);
                         Post post = new Post(name.getText().toString(),description.getText().toString(),imageUrl,
                                 sportName,ownerId,city.getSelectedItem().toString(),phoneNumber.getText().toString());
-                        PostFireBase.addPost(post, new PostModel.Listener<Post>() {
+                        PostModel.instance.addPost(post, new PostModel.Listener<Post>() {
                             @Override
                             public void onComplete(Post data) {
                                 PostModel.instance.refreshSportPostsList(sport, new PostModel.CompleteListener() {

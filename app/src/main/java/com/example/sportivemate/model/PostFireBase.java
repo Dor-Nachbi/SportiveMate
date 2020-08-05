@@ -165,6 +165,7 @@ public class PostFireBase {
     private static Map<String, Object> jsonFromPost(Post post) {
         HashMap<String, Object> json = new HashMap<>();
         json.put("postName", post.getName());
+        json.put("imageUrl", post.getImageUrl());
         json.put("city", post.getCity());
         json.put("description", post.getDescription());
         json.put("ownerId", UserModel.instance.getCurrentUserId());
@@ -185,6 +186,7 @@ public class PostFireBase {
         }
         post.setName((String)json.get("postName"));
         post.setCity((String)json.get("city"));
+        post.setImageUrl((String)json.get("imageUrl"));
         post.setDescription((String)json.get("description"));
         post.setOwnerId(ownerId);
         post.setSportName(sportName);

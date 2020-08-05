@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
+
+import java.util.Date;
 
 
 public class PostDetailsFragment extends Fragment {
@@ -40,8 +43,12 @@ public class PostDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_post_details, container, false);
-        long date = PostDetailsFragmentArgs.fromBundle(getArguments()).getPost().getDate();
-        Log.d("TAG", ""+date);
+        post = PostDetailsFragmentArgs.fromBundle(getArguments()).getPost();
+        String longV = ""+post.getDate();
+        long millisecond = Long.parseLong(longV);
+        String dateString = DateFormat.format("MM/dd/yyyy", new Date(millisecond)).toString();
+        if(post.getImageUrl() == null)
+            Log.d("TAG", "image is null");
         return view;
     }
 }

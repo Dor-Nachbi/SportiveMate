@@ -21,6 +21,8 @@ import com.example.sportivemate.UI.SportPostsListFragmentDirections;
 import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.Sport;
+import com.example.sportivemate.model.User;
+import com.example.sportivemate.model.UserFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
