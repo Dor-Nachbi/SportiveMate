@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -105,7 +106,7 @@ public class PostModel {
         });
     }
 
-    public LiveData<Post> getPost(String Id) {
+    public LiveData<Post> getPost(String Id){
         LiveData<Post> postLiveData = AppLocalDb.db.postDao().getPost(Id);
         refreshPostDetails(Id);
         return postLiveData;
@@ -129,12 +130,13 @@ public class PostModel {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void addPost(final Post post, final Listener<Post> listener) {
         PostFireBase.addPost(post, listener);
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void updateReport(final Post post, final Listener<Boolean> listener) {
+    public void updatePost(final Post post, final Listener<Boolean> listener) {
         PostFireBase.updatePost(post, new Listener<Boolean>() {
             @Override
             public void onComplete(Boolean data) {

@@ -57,5 +57,17 @@
         <argument
             android:name="post"
             app:argType="com.example.sportivemate.model.Post" />
+        <action
+            android:id="@+id/action_postDetailsFragment_to_postEditFragment"
+            app:destination="@id/postEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postEditFragment"
+        android:name="com.example.sportivemate.UI.PostEditFragment"
+        android:label="fragment_post_edit"
+        tools:layout="@layout/fragment_post_edit" >
+        <argument
+            android:name="postID"
+            app:argType="string" />
     </fragment>
 </navigation>

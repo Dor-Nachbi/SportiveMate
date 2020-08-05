@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.sportivemate.R;
+import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostFireBase;
 import com.example.sportivemate.model.PostModel;

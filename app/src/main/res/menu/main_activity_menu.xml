@@ -6,7 +6,7 @@
         android:id="@+id/main_activity_menu_logout"
         android:checkable="false"
         android:enabled="true"
-        android:icon="@android:drawable/ic_notification_overlay"
+        android:icon="@drawable/common_full_open_on_phone"
         android:visible="true"
         app:showAsAction="always" />
 </menu>

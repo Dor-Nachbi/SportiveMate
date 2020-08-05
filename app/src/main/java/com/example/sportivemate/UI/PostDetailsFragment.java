@@ -1,12 +1,21 @@
 package com.example.sportivemate.UI;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AlertDialogLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +23,9 @@ import android.widget.TextView;
 
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
+import com.example.sportivemate.model.PostFireBase;
+import com.example.sportivemate.model.PostModel;
+import com.example.sportivemate.model.SportModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -75,5 +87,57 @@ public class PostDetailsFragment extends Fragment {
             image.setImageResource(R.drawable.ic_launcher_background);
         }
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        PostFireBase.getPostById(post.getId(), new PostModel.Listener<Post>() {
+            @Override
+            public void onComplete(Post data) {
+                phoneNumber.setText(data.getPhoneNumber());
+                description.setText(data.getDescription());
+                city.setText(data.getCity());
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.details_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.delete_post_menu_item){
+            new AlertDialog.Builder(getContext(),R.style.AlertDialog).setTitle("Delete Post").setMessage(
+                    "Are ou sure you want to delete this post?").setPositiveButton(
+                    "Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            PostModel.instance.deletePost(post, new PostModel.Listener<Boolean>() {
+                                @Override
+                                public void onComplete(Boolean data) {
+                                    Navigation.findNavController(view).navigateUp();
+                                }
+                            });
+                        }
+                    }
+            ).setNegativeButton("No",null).setIconAttribute(android.R.attr.alertDialogIcon).show();
+        }
+        else if(item.getItemId() == R.id.edit_post_menu_item)
+        {
+            Log.d("TAG", "edit");
+            Navigation.findNavController(getActivity(),R.id.nav_host_home).
+                    navigate(PostDetailsFragmentDirections.actionPostDetailsFragmentToPostEditFragment(post.getId()));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
