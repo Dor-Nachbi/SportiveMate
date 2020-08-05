@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string-array name="spinnerItems">
+            <item>Tel-Aviv</item>
+            <item>Rishon-LeZion</item>
+            <item>Ashdod</item>
+            <item>Ashkelon</item>
+            <item>Haifa</item>
+            <item>Beer-Sheva</item>
+            <item>Petah-Tikva</item>
+            <item>Nes-Tsiona</item>
+            <item>Ramat-Gan</item>
+            <item>Givataim</item>
+            <item>Netanya</item>
+            <item>Kfar-Saba</item>
+        </string-array>
+</resources>

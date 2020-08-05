@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.sportivemate.UI.HomeFragment;
 import com.example.sportivemate.UI.HomeFragmentDirections;
 import com.example.sportivemate.UI.SportPostsListFragment;
+import com.example.sportivemate.UI.SportPostsListFragmentDirections;
 import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.Sport;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
 
     @Override
     public void OnItemSelected(Post post) {
-        //navController.navigate(SpotReportsListFragmentDirections.actionGlobalReportDetailsFragment(report));
+        navController.navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToPostDetailsFragment(post));
     }
 
 }

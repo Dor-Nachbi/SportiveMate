@@ -141,8 +141,8 @@ public class HomeFragment extends Fragment {
                     }
                 }
             });
-            name = itemView.findViewById(R.id.row_post_name_tv);
-            image = itemView.findViewById(R.id.post_imageView);
+            name = itemView.findViewById(R.id.row_sport_name_tv);
+            image = itemView.findViewById(R.id.sport_imageView);
         }
 
         void bind(Sport sport) {

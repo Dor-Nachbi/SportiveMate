@@ -33,10 +33,29 @@
         <action
             android:id="@+id/action_sportPostsListFragment_to_addPostFragment"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_sportPostsListFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.sportivemate.UI.AddPostFragment"
         android:label="fragment_add_post"
-        tools:layout="@layout/fragment_add_post" />
+        tools:layout="@layout/fragment_add_post" >
+        <argument
+            android:name="sport"
+            app:argType="com.example.sportivemate.model.Sport" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailsFragment"
+        android:name="com.example.sportivemate.UI.PostDetailsFragment"
+        android:label="fragment_post_details"
+        tools:layout="@layout/fragment_post_details" >
+        <argument
+            android:name="post"
+            app:argType="com.example.sportivemate.model.Post" />
+    </fragment>
 </navigation>

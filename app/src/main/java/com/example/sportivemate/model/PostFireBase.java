@@ -165,6 +165,7 @@ public class PostFireBase {
     private static Map<String, Object> jsonFromPost(Post post) {
         HashMap<String, Object> json = new HashMap<>();
         json.put("postName", post.getName());
+        json.put("city", post.getCity());
         json.put("description", post.getDescription());
         json.put("ownerId", UserModel.instance.getCurrentUserId());
         json.put("sportName", post.getSportName());
@@ -183,6 +184,7 @@ public class PostFireBase {
             throw new RuntimeException("Invalid owner id or sport name");
         }
         post.setName((String)json.get("postName"));
+        post.setCity((String)json.get("city"));
         post.setDescription((String)json.get("description"));
         post.setOwnerId(ownerId);
         post.setSportName(sportName);

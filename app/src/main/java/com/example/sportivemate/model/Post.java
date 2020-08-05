@@ -22,13 +22,7 @@ public class Post implements Serializable {
     private String name;
     private String imageUrl;
     private String description;
-
-
-
     private String city;
-
-
-
     private String phoneNumber;
     long lastUpdated;
 
@@ -93,12 +87,15 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(@NonNull String name,@NonNull String description,@NonNull String imageUrl,String sportName,String ownerId) {
+    public Post(@NonNull String name,@NonNull String description,@NonNull String imageUrl,String sportName,String ownerId,
+                String city, String phoneNumber) {
         this.name = name;
         this.description=description;
         this.imageUrl = imageUrl;
         this.sportName = sportName;
         this.ownerId = ownerId;
+        this.city = city;
+        this.phoneNumber = phoneNumber;
     }
 
     public long getLastUpdated() {

@@ -9,10 +9,10 @@
         android:id="@+id/row_post_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="name"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/description_post_edittext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/post_imageView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,31 +22,30 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate_posts"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background"
         tools:srcCompat="@drawable/ic_launcher_background"
         tools:visibility="visible" />
 
-    <EditText
-        android:id="@+id/description_post_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextDate_posts" />
-
-    <EditText
-        android:id="@+id/editTextDate_posts"
+    <TextView
+        android:id="@+id/post_time_tv"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date"
+        android:layout_marginBottom="16dp"
+        android:text="time"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/post_imageView" />
+
+    <TextView
+        android:id="@+id/post_city_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="city"
+        app:layout_constraintBottom_toTopOf="@+id/post_time_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/post_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/row_post_name_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

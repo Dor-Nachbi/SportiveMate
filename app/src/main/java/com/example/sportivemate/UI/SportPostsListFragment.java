@@ -148,8 +148,8 @@ public class SportPostsListFragment extends Fragment {
     static class PostRowViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView image;
-        EditText description;
-        EditText date;
+        TextView time;
+        TextView city;
 
         public PostRowViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -172,15 +172,16 @@ public class SportPostsListFragment extends Fragment {
                 }
             });
             image = itemView.findViewById(R.id.post_imageView);
-            description = itemView.findViewById(R.id.description_post_edittext);
-            date = itemView.findViewById(R.id.editTextDate_posts);
+            time = itemView.findViewById(R.id.post_time_tv);
+            city = itemView.findViewById(R.id.post_city_tv);
 
         }
 
         void bind(Post post) {
             name.setText(post.getName());
-            description.setText(post.getDescription());
-            date.setTextLocale(Locale.ENGLISH);
+            String t = ""+post.getDate();
+            time.setText(t);
+            city.setText(post.getCity());
             if(post.getImageUrl() != null && post.getImageUrl() != "") {
                 Picasso.get().load(post.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(image);
             }else{
@@ -224,7 +225,8 @@ public class SportPostsListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addPostFragment);
+        Navigation.findNavController(getActivity(),R.id.nav_host_home).
+                navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToAddPostFragment(sport,username));
         return super.onOptionsItemSelected(item);
     }
 }
