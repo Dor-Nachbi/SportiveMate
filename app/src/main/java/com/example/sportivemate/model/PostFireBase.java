@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class PostFireBase {
-    private static final String REPORT_COLLECTION = "Posts";
+    private static final String POST_COLLECTION = "Posts";
 
     public static void addPost(final Post post, final PostModel.Listener<Post> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).add(jsonFromPost(post)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        db.collection(POST_COLLECTION).add(jsonFromPost(post)).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
@@ -43,7 +43,7 @@ public class PostFireBase {
 
     public static void getPostById(final String ownerId, final PostModel.Listener<Post> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).document(ownerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection(POST_COLLECTION).document(ownerId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot res = task.getResult();
@@ -55,7 +55,7 @@ public class PostFireBase {
 
     public static void updatePost(Post post, final PostModel.Listener<Boolean> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).document(post.getId()).set(jsonFromPost(post))
+        db.collection(POST_COLLECTION).document(post.getId()).set(jsonFromPost(post))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -66,7 +66,7 @@ public class PostFireBase {
 
     public static void setPostImageUrl(String reportId, String imageUrl, final PostModel.Listener<Boolean> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).document(reportId).update("imageUrl", imageUrl)
+        db.collection(POST_COLLECTION).document(reportId).update("imageUrl", imageUrl)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -78,7 +78,7 @@ public class PostFireBase {
 
     public static void deletePost(final Post post, final PostModel.Listener<Boolean> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).document(post.getId()).update("isDeleted", true)
+        db.collection(POST_COLLECTION).document(post.getId()).update("isDeleted", true)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -115,7 +115,7 @@ public class PostFireBase {
 
     static void getAllPosts(Sport sport, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(REPORT_COLLECTION).whereEqualTo("sportName", sport.getName())
+        db.collection(POST_COLLECTION).whereEqualTo("sportName", sport.getName())
                 .whereEqualTo("isDeleted", false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -139,9 +139,9 @@ public class PostFireBase {
     static void getAllUserPostsSince(String userId, long since, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp timestamp = new Timestamp(new Date(since));
-        db.collection(REPORT_COLLECTION).whereEqualTo("ownerId", userId)
-                .whereEqualTo("isDeleted", false)
-                .whereGreaterThanOrEqualTo("lastUpdated", timestamp).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection(POST_COLLECTION).whereEqualTo("ownerId", userId)
+                //.whereEqualTo("isDeleted", false)
+                /*.whereGreaterThanOrEqualTo("lastUpdated", timestamp)*/.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 List<Post> posts;

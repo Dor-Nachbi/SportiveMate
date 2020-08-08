@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import com.example.sportivemate.UI.HomeFragment;
 import com.example.sportivemate.UI.HomeFragmentDirections;
 import com.example.sportivemate.UI.SportPostsListFragment;
 import com.example.sportivemate.UI.SportPostsListFragmentDirections;
+import com.example.sportivemate.UI.UserDetailsFragment;
+import com.example.sportivemate.UI.UserDetailsFragmentDirections;
 import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.Sport;
@@ -26,7 +29,7 @@ import com.example.sportivemate.model.UserFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.Delegate, SportPostsListFragment.Delegate {
+public class MainActivity extends AppCompatActivity implements HomeFragment.Delegate, SportPostsListFragment.Delegate, UserDetailsFragment.Delegate{
 
     private Button logoutBtn;
     private FirebaseAuth mAuth;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         navController = Navigation.findNavController(this, R.id.nav_host_home);
+        NavigationUI.setupActionBarWithNavController(this,navController);
     }
 
     public void updateUI() {
@@ -60,15 +64,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
                 Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), LoginRegisterActivity.class));
                 finish();
-                return true;
+                return super.onOptionsItemSelected(item);
             }
+            case android.R.id.home:
+                navController.navigateUp();
+                return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void OnItemSelected(Sport sport) {
-        navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport));
+        navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport, false));
     }
 
     @Override
@@ -76,4 +83,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
         navController.navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToPostDetailsFragment(post));
     }
 
+    @Override
+    public void OnShowUserPostsClicked() {
+        navController.navigate(UserDetailsFragmentDirections.actionUserDetailsFragmentToSportPostsListFragment(new Sport(),true));
+    }
 }

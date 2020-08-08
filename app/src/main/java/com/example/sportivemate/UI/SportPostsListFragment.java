@@ -54,6 +54,7 @@ public class SportPostsListFragment extends Fragment {
     private SportPostListViewModel viewModel;
     private PostsListAdapter adapter;
     private LiveData<List<Post>> liveData;
+    Boolean isUserList;
     Sport sport;
     String username;
     String userID;
@@ -76,7 +77,8 @@ public class SportPostsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sport_posts_list, container, false);
         postsList = view.findViewById(R.id.posts_list_list);
         postsList.setHasFixedSize(true);
-        sport = SportPostsListFragmentArgs.fromBundle(getArguments()).getSport();
+        isUserList = SportPostsListFragmentArgs.fromBundle(getArguments()).getIsUserList();
+            sport = SportPostsListFragmentArgs.fromBundle(getArguments()).getSport();
         UserFirebase.getCurrentUserDetails(new UserModel.Listener<User>() {
             @Override
             public void onComplete(User data) {
@@ -99,8 +101,10 @@ public class SportPostsListFragment extends Fragment {
         });
 
         postsList.addItemDecoration(new DividerItemDecoration(postsList.getContext(), layoutManager.getOrientation()));
-
-        liveData = viewModel.getLiveData(sport);
+        if(isUserList)
+            liveData = viewModel.getUserPostsLiveData();
+        else
+            liveData = viewModel.getLiveData(sport);
         liveData.observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
@@ -113,12 +117,22 @@ public class SportPostsListFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                viewModel.refresh(sport, new PostModel.CompleteListener() {
-                    @Override
-                    public void onComplete() {
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
+                if(isUserList) {
+                    viewModel.refresh(sport, new PostModel.CompleteListener() {
+                        @Override
+                        public void onComplete() {
+                            swipeRefresh.setRefreshing(false);
+                        }
+                    }, true);
+                }
+                else {
+                    viewModel.refresh(sport, new PostModel.CompleteListener() {
+                        @Override
+                        public void onComplete() {
+                            swipeRefresh.setRefreshing(false);
+                        }
+                    }, false);
+                }
             }
         });
 
@@ -228,12 +242,21 @@ public class SportPostsListFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.sport_list_menu,menu);
+        MenuItem details = menu.findItem(R.id.sport_list_menu_user_details);
+        MenuItem addSport = menu.findItem(R.id.sport_list_menu_add_sport);
+        details.setVisible(false);
+        if(isUserList)
+            addSport.setVisible(false);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Navigation.findNavController(getActivity(),R.id.nav_host_home).
-                navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToAddPostFragment(sport,username));
+        switch (item.getItemId()) {
+            case R.id.sport_list_menu_add_sport: {
+                Navigation.findNavController(getActivity(), R.id.nav_host_home).
+                        navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToAddPostFragment(sport, username));
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 }

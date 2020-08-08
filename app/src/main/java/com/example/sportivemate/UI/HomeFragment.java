@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -188,15 +189,25 @@ public class HomeFragment extends Fragment {
         UserFirebase.getCurrentUserDetails(new UserModel.Listener<User>() {
             @Override
             public void onComplete(User data) {
-                if(data.getEmail().toString().equals("1@1.com"))
-                    inflater.inflate(R.menu.sport_list_menu,menu);
+                inflater.inflate(R.menu.sport_list_menu,menu);
+                if(!data.getEmail().toString().equals("1@1.com")) {
+                    MenuItem addSport = menu.findItem(R.id.sport_list_menu_add_sport);
+                    addSport.setVisible(false);
+                }
             }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Navigation.findNavController(getActivity(),R.id.nav_host_home).navigate(R.id.addSportFragment);
+        switch (item.getItemId()) {
+            case R.id.sport_list_menu_user_details:
+                Navigation.findNavController(getActivity(), R.id.nav_host_home).navigate(R.id.userDetailsFragment);
+                return super.onOptionsItemSelected(item);
+            case R.id.sport_list_menu_add_sport:
+                Navigation.findNavController(getActivity(), R.id.nav_host_home).navigate(R.id.addSportFragment);
+                return super.onOptionsItemSelected(item);
+        }
         return super.onOptionsItemSelected(item);
     }
 }

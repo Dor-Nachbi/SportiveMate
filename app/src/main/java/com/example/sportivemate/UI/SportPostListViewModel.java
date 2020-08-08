@@ -9,6 +9,7 @@ import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostModel;
 import com.example.sportivemate.model.Sport;
 import com.example.sportivemate.model.SportModel;
+import com.example.sportivemate.model.UserModel;
 
 import java.util.List;
 
@@ -20,8 +21,15 @@ public class SportPostListViewModel extends ViewModel {
             liveData = PostModel.instance.getAllPosts(sport);
         return liveData;
     }
-
-    public void refresh(Sport sport, PostModel.CompleteListener listener) {
-        PostModel.instance.refreshSportPostsList(sport, listener);
+    public LiveData<List<Post>> getUserPostsLiveData() {
+        if (liveData == null)
+            liveData = PostModel.instance.getUserPosts(UserModel.instance.getCurrentUserId());
+        return liveData;
+    }
+    public void refresh(Sport sport, PostModel.CompleteListener listener,boolean isUserPosts) {
+        if(isUserPosts)
+            PostModel.instance.refreshUserPostsList(UserModel.instance.getCurrentUserId(), listener);
+        else
+            PostModel.instance.refreshSportPostsList(sport, listener);
     }
 }

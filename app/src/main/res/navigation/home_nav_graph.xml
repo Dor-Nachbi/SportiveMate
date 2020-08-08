@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_sportPostsListFragment"
             app:destination="@id/sportPostsListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
     <fragment
         android:id="@+id/addSportFragment"
@@ -36,6 +39,9 @@
         <action
             android:id="@+id/action_sportPostsListFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
+        <argument
+            android:name="IsUserList"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -69,5 +75,14 @@
         <argument
             android:name="postID"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.sportivemate.UI.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" >
+        <action
+            android:id="@+id/action_userDetailsFragment_to_sportPostsListFragment"
+            app:destination="@id/sportPostsListFragment" />
     </fragment>
 </navigation>
