@@ -26,6 +26,7 @@ import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostFireBase;
 import com.example.sportivemate.model.PostModel;
 import com.example.sportivemate.model.SportModel;
+import com.example.sportivemate.model.UserModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -65,7 +66,7 @@ public class PostDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_post_details, container, false);
-        post = PostDetailsFragmentArgs.fromBundle(getArguments()).getPost();
+
         time = view.findViewById(R.id.post_details_time);
         description = view.findViewById(R.id.post_details_description);
         name = view.findViewById(R.id.post_details_name);
@@ -92,7 +93,10 @@ public class PostDetailsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        setHasOptionsMenu(true);
+        post = PostDetailsFragmentArgs.fromBundle(getArguments()).getPost();
+        String var = UserModel.instance.getCurrentUserId();
+        if (var.equals(post.getOwnerId()))
+            setHasOptionsMenu(true);
     }
 
     @Override

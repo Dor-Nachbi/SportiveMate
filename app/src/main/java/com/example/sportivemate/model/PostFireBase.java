@@ -140,7 +140,7 @@ public class PostFireBase {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp timestamp = new Timestamp(new Date(since));
         db.collection(POST_COLLECTION).whereEqualTo("ownerId", userId)
-                //.whereEqualTo("isDeleted", false)
+                .whereEqualTo("isDeleted", false)
                 /*.whereGreaterThanOrEqualTo("lastUpdated", timestamp)*/.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

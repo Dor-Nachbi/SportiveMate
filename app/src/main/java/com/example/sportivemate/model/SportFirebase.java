@@ -108,4 +108,15 @@ public class SportFirebase {
             }
         });
     }
+
+    /*public static void deleteSport(final Post post, final PostModel.Listener<Boolean> listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(POST_COLLECTION).document(post.getId()).update("isDeleted", true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.onComplete(task.isSuccessful());
+                    }
+                });
+    }*/
 }

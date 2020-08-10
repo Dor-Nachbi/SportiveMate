@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
         mAuth = FirebaseAuth.getInstance();
         navController = Navigation.findNavController(this, R.id.nav_host_home);
         NavigationUI.setupActionBarWithNavController(this,navController);
+
     }
 
     public void updateUI() {
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
     @Override
     public void OnItemSelected(Sport sport) {
         navController.navigate(HomeFragmentDirections.actionHomeFragmentToSportPostsListFragment(sport, false));
+        Log.d("TAG",sport.getName().toString());
+
     }
 
     @Override

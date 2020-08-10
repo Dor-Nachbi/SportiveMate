@@ -1,6 +1,8 @@
 package com.example.sportivemate.UI;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -239,7 +241,7 @@ public class SportPostsListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.sport_list_menu,menu);
         MenuItem details = menu.findItem(R.id.sport_list_menu_user_details);
@@ -247,6 +249,15 @@ public class SportPostsListFragment extends Fragment {
         details.setVisible(false);
         if(isUserList)
             addSport.setVisible(false);
+        UserModel.instance.getCurrentUserDetails(new UserModel.Listener<User>() {
+            @Override
+            public void onComplete(User data) {
+                if(data.getEmail().toString().equals("1@1.com")) {
+                    MenuItem deleteSport = menu.findItem(R.id.sport_list_menu_delete_sport);
+                    deleteSport.setVisible(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -255,6 +266,22 @@ public class SportPostsListFragment extends Fragment {
             case R.id.sport_list_menu_add_sport: {
                 Navigation.findNavController(getActivity(), R.id.nav_host_home).
                         navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToAddPostFragment(sport, username));
+            }
+            case R.id.sport_list_menu_delete_sport: {
+                /*new AlertDialog.Builder(getContext(),R.style.AlertDialog).setTitle("Delete Sport").setMessage(
+                        "Are ou sure you want to delete this sport category?").setPositiveButton(
+                        "Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SportModel.(sport, new PostModel.Listener<Boolean>() {
+                                    @Override
+                                    public void onComplete(Boolean data) {
+                                        //Navigation.findNavController(view).navigateUp();
+                                    }
+                                });
+                            }
+                        }
+                ).setNegativeButton("No",null).setIconAttribute(android.R.attr.alertDialogIcon).show();*/
             }
         }
         return super.onOptionsItemSelected(item);

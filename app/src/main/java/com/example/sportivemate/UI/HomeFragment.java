@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,6 +69,7 @@ public class HomeFragment extends Fragment {
 
         adapter = new SportsListAdapter();
         sportsList.setAdapter(adapter);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -163,7 +165,6 @@ public class HomeFragment extends Fragment {
         void setOnItemClickListener(OnItemClickListener listener) {
             this.listener = listener;
         }
-
         @NonNull
         @Override
         public SportRowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -181,6 +182,7 @@ public class HomeFragment extends Fragment {
         public int getItemCount() {
             return sportsData.size();
         }
+
     }
 
     @Override

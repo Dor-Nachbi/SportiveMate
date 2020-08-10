@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/sport_list_menu_delete_sport"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/sport_list_menu_user_details"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_info_details"

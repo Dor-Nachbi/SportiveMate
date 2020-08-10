@@ -108,4 +108,16 @@ public class SportModel {
             }
         });
     }
+    /*@SuppressLint("StaticFieldLeak")
+    public void deleteSport(final Sport sport, SportModel.Listener<Boolean> listener) {
+        SportFirebase.deleteSport(sport, listener);
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... strings) {
+                AppLocalDb.db.postDao().delete(sport);
+                return null;
+            }
+        }.execute();
+
+    }*/
 }
