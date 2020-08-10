@@ -108,16 +108,19 @@ public class SportModel {
             }
         });
     }
-    /*@SuppressLint("StaticFieldLeak")
-    public void deleteSport(final Sport sport, SportModel.Listener<Boolean> listener) {
+
+    @SuppressLint("StaticFieldLeak")
+    public void deleteSport(final Sport sport, final SportModel.Listener<Boolean> listener) {
         SportFirebase.deleteSport(sport, listener);
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... strings) {
-                AppLocalDb.db.postDao().delete(sport);
+                String name = sport.getName();
+                AppLocalDb.db.postDao().deleteSportPosts(name);
+                AppLocalDb.db.sportDao().deleteSport(name);
+                //listener.onComplete(true);
                 return null;
             }
         }.execute();
-
-    }*/
+    }
 }

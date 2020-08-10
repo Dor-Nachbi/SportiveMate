@@ -1,5 +1,6 @@
 package com.example.sportivemate.UI;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostFireBase;
@@ -154,6 +156,13 @@ public class SportPostsListFragment extends Fragment {
 
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -205,7 +214,7 @@ public class SportPostsListFragment extends Fragment {
             String dateString = DateFormat.format("MM/dd/yyyy HH:mm:ss", new Date(millisecond)).toString();
             time.setText(dateString);
             city.setText(post.getCity());
-            if(post.getImageUrl() != null && post.getImageUrl() != "") {
+            if(post.getImageUrl() != null && !post.getImageUrl().equals("")) {
                 Picasso.get().load(post.getImageUrl()).placeholder(R.drawable.ic_launcher_background).into(image);
             }else{
                 image.setImageResource(R.drawable.ic_launcher_background);
@@ -266,22 +275,24 @@ public class SportPostsListFragment extends Fragment {
             case R.id.sport_list_menu_add_sport: {
                 Navigation.findNavController(getActivity(), R.id.nav_host_home).
                         navigate(SportPostsListFragmentDirections.actionSportPostsListFragmentToAddPostFragment(sport, username));
+                return super.onOptionsItemSelected(item);
             }
             case R.id.sport_list_menu_delete_sport: {
-                /*new AlertDialog.Builder(getContext(),R.style.AlertDialog).setTitle("Delete Sport").setMessage(
+                new AlertDialog.Builder(getContext(),R.style.AlertDialog).setTitle("Delete Sport").setMessage(
                         "Are ou sure you want to delete this sport category?").setPositiveButton(
                         "Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                SportModel.(sport, new PostModel.Listener<Boolean>() {
+                                SportModel.instance.deleteSport(sport, new SportModel.Listener<Boolean>() {
+                                    @SuppressLint("ResourceType")
                                     @Override
                                     public void onComplete(Boolean data) {
-                                        //Navigation.findNavController(view).navigateUp();
+                                        Navigation.findNavController(getActivity(),R.id.nav_host_home).navigateUp();
                                     }
                                 });
                             }
                         }
-                ).setNegativeButton("No",null).setIconAttribute(android.R.attr.alertDialogIcon).show();*/
+                ).setNegativeButton("No",null).setIconAttribute(android.R.attr.alertDialogIcon).show();
             }
         }
         return super.onOptionsItemSelected(item);

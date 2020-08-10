@@ -42,11 +42,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Dele
         mAuth = FirebaseAuth.getInstance();
         navController = Navigation.findNavController(this, R.id.nav_host_home);
         NavigationUI.setupActionBarWithNavController(this,navController);
-
     }
 
     public void updateUI() {
 
+    }
+
+    public void setActionBarTitle(){
+        getSupportActionBar().setTitle("SportiveMate");
     }
 
     @Override

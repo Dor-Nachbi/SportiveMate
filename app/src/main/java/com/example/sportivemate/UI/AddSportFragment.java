@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Sport;
 import com.example.sportivemate.model.SportFirebase;
@@ -77,32 +78,49 @@ public class AddSportFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    takePhoto.setClickable(false);
-                    save.setClickable(false);
+                progressBar.setVisibility(View.VISIBLE);
+                takePhoto.setClickable(false);
+                save.setClickable(false);
+                if (imageBitmap == null) {
+                    final Sport sport = new Sport(name.getText().toString(), description.getText().toString(), null);
+                    SportFirebase.addSport(sport, new SportModel.Listener<Boolean>() {
+                        @Override
+                        public void onComplete(Boolean data) {
+                            SportModel.instance.refreshSportsList(null);
+                            Navigation.findNavController(getActivity(), R.id.nav_host_home).navigateUp();
+                        }
+                    });
+
+                } else {
                     StoreModel.uploadImage(imageBitmap, name.getText().toString(), new StoreModel.Listener() {
                         @Override
                         public void onSuccess(String url) {
-                            final Sport sport = new Sport(name.getText().toString(),description.getText().toString(),url);
+                            final Sport sport = new Sport(name.getText().toString(), description.getText().toString(), url);
                             SportFirebase.addSport(sport, new SportModel.Listener<Boolean>() {
                                 @Override
                                 public void onComplete(Boolean data) {
                                     SportModel.instance.refreshSportsList(null);
-                                    Navigation.findNavController(getActivity(),R.id.nav_host_home).navigateUp();
+                                    Navigation.findNavController(getActivity(), R.id.nav_host_home).navigateUp();
                                 }
                             });
                         }
 
                         @Override
                         public void onFail() {
-
                         }
-                    },"sports_images");
+                    }, "sports_images");
 
 
+                }
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
     }
 
     private void takePhoto() {

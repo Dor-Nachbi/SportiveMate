@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostFireBase;
@@ -143,5 +144,11 @@ public class PostDetailsFragment extends Fragment {
                     navigate(PostDetailsFragmentDirections.actionPostDetailsFragmentToPostEditFragment(post.getId()));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
     }
 }

@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Sport;
 import com.example.sportivemate.model.SportModel;
@@ -104,6 +105,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -122,6 +124,12 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         parent = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
+   }
 
     interface OnItemClickListener {
         void onClick(int position);

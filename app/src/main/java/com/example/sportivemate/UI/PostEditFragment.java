@@ -1,5 +1,7 @@
 package com.example.sportivemate.UI;
 
+import android.content.Context;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,20 +10,26 @@ import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
+import android.view.KeyboardShortcutGroup;
+import android.view.KeyboardShortcutInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.Post;
 import com.example.sportivemate.model.PostFireBase;
 import com.example.sportivemate.model.PostModel;
 import com.example.sportivemate.model.Sport;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 
 public class PostEditFragment extends Fragment {
@@ -62,6 +70,7 @@ public class PostEditFragment extends Fragment {
         phoneNumber = view.findViewById(R.id.edit_post_fragment_new_phone);
         save = view.findViewById(R.id.edit_post_save_btn);
         postID = PostEditFragmentArgs.fromBundle(getArguments()).getPostID();
+        progressBar = view.findViewById(R.id.new_edit_post_progress);
         PostFireBase.getPostById(postID, new PostModel.Listener<Post>() {
             @Override
             public void onComplete(Post data) {
@@ -78,6 +87,7 @@ public class PostEditFragment extends Fragment {
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
                         post.setPhoneNumber(phoneNumber.getText().toString());
                         post.setCity(city.getSelectedItem().toString());
                         Log.d("TAG", description.getText().toString());
@@ -94,5 +104,11 @@ public class PostEditFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
     }
 }

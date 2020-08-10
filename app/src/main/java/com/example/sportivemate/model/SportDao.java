@@ -20,6 +20,9 @@ public interface SportDao {
     @Query("SELECT * FROM Sports WHERE name LIKE :spotName")
     LiveData<Sport> getSport(String spotName);
 
+    @Query ("DELETE FROM Sports WHERE name LIKE :sportName")
+    void deleteSport(String sportName);
+
     @Query ("DELETE FROM Sports")
     void delete();
 }

@@ -1,5 +1,8 @@
 package com.example.sportivemate.model;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -109,14 +112,17 @@ public class SportFirebase {
         });
     }
 
-    /*public static void deleteSport(final Post post, final PostModel.Listener<Boolean> listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(POST_COLLECTION).document(post.getId()).update("isDeleted", true)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        listener.onComplete(task.isSuccessful());
-                    }
-                });
-    }*/
+    public static void deleteSport(final Sport sport, final SportModel.Listener<Boolean> listener) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        PostFireBase.deletePosts(sport, new PostModel.Listener<Boolean>() {
+            @Override
+            public void onComplete(Boolean data) {
+                    db.collection(SPORT_COLLECTION).document(sport.getName()).delete();
+                    listener.onComplete(true);
+
+            }
+        });
+    }
+
+
 }

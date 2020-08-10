@@ -22,6 +22,9 @@ public interface PostDao {
     @Query("SELECT * FROM Posts WHERE id LIKE :Id")
     LiveData<Post> getPost(String Id);
 
+    @Query("DELETE FROM Posts WHERE sportName LIKE :sportName")
+    void deleteSportPosts(String sportName);
+
     @Delete
     void delete(Post post);
 }

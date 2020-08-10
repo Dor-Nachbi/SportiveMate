@@ -87,6 +87,27 @@ public class PostFireBase {
                 });
     }
 
+    public static void deletePosts(final Sport sport, final PostModel.Listener<Boolean> listener) {
+        getAllPosts(sport, new PostModel.Listener<List<Post>>() {
+            @Override
+            public void onComplete(List<Post> posts) {
+                if (posts.size()>0) {
+                    for(Post post: posts)
+                    {
+                        deletePost(post, new PostModel.Listener<Boolean>() {
+                            @Override
+                            public void onComplete(Boolean data) {
+                                listener.onComplete(true);
+                            }});
+                    }
+                }
+                else
+                    listener.onComplete(true);
+
+            }
+        });
+    }
+
     /*static void getAllSportPostsSince(Sport spot, long since, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Timestamp timestamp = new Timestamp(new Date(since));

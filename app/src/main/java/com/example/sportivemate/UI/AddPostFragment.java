@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
 import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
@@ -101,5 +102,12 @@ public class AddPostFragment extends Fragment {
             }
         });
         return view;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity)getActivity()).setActionBarTitle();
     }
 }
