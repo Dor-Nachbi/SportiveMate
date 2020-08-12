@@ -108,32 +108,6 @@ public class PostFireBase {
         });
     }
 
-    /*static void getAllSportPostsSince(Sport spot, long since, final PostModel.Listener<List<Post>> listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Timestamp timestamp = new Timestamp(new Date(since));
-        db.collection(REPORT_COLLECTION).whereEqualTo("sportName", spot.getName())
-                .whereEqualTo("isDeleted", false)
-                .whereGreaterThanOrEqualTo("lastUpdated", timestamp).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Post> posts;
-                if (task.isSuccessful()) {
-                    posts = new LinkedList<>();
-                    if (task.getResult() != null)
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            Map<String, Object> json = doc.getData();
-                            Post report = postFromJson(doc.getId(), json);
-                            report.setId(doc.getId());
-                            posts.add(report);
-                        }
-                    listener.onComplete(posts);
-                } else {
-                    throw new RuntimeException(task.getException());
-                }
-            }
-        });
-    }*/
-
     static void getAllPosts(Sport sport, final PostModel.Listener<List<Post>> listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(POST_COLLECTION).whereEqualTo("sportName", sport.getName())

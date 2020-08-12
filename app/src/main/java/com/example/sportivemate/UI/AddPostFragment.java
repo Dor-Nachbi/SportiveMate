@@ -1,12 +1,8 @@
 package com.example.sportivemate.UI;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavArgs;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +12,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.sportivemate.MainActivity;
 import com.example.sportivemate.R;
-import com.example.sportivemate.model.AppLocalDb;
 import com.example.sportivemate.model.Post;
-import com.example.sportivemate.model.PostFireBase;
 import com.example.sportivemate.model.PostModel;
 import com.example.sportivemate.model.Sport;
-import com.example.sportivemate.model.SportFirebase;
-import com.example.sportivemate.model.SportModel;
 import com.example.sportivemate.model.User;
 import com.example.sportivemate.model.UserFirebase;
 import com.example.sportivemate.model.UserModel;
